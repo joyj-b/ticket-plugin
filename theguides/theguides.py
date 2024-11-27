@@ -221,8 +221,8 @@ def handle_cooldown_result(future, ctx):
 
 
 def new_cooldown(ctx):
-    # if ctx.author.id in BYPASS_LIST:
-    #    return None
+    if ctx.author.id in BYPASS_LIST:
+       return None
 
     print(f"cooldown")
     cooldown = get_cooldown_time_sync(ctx.bot.sync_db, ctx)
