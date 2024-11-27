@@ -10,6 +10,8 @@ import uuid
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
 
+import random
+
 import aiohttp
 import aiopg
 import core
@@ -35,6 +37,40 @@ UNITS = {
     'd': 'days',
     'w': 'weeks'
 }
+
+MOTIVATIONAL_QUOTES = [
+    "To toil unyielding is to defy the heavens and earn thy rightful glory.",
+    "The weak are but shadows, while the strong etch their names upon stone.",
+    "He who fears the wrath of kings shall forever dwell in servitude.",
+    "Deny not thy ambitions; for he who grovels shall inherit naught but dust.",
+    "Only the bold dare sip from the cup of destiny.",
+    "Mercy is oft a veil for cowardice; strike while the iron is hot.",
+    "In the forge of adversity, only the resolute are deemed worthy.",
+    "The gods aid those who carve their own path with blade and wit.",
+    "Hesitation is the dirge of the unworthy; act, or be forgotten.",
+    "A throne is never granted; it is seized by the audacious.",
+    "The stars weep not for those who falter; rise, or perish in obscurity.",
+    "Lo, the meek may inherit the earth, but the strong claim the heavens.",
+    "Idleness is the herald of decay; only the industrious shall thrive.",
+    "Pity not the fallen; they are but stepping stones for the ambitious.",
+    "A man's worth is measured by the foes he dares to challenge.",
+    "The silence of the oppressed is the triumph of tyranny; speak, or be chained.",
+    "In the arena of life, the lion devours the lamb; be no lamb.",
+    "The fates weave for the daring, not for the docile.",
+    "To conquer is not cruel; it is the order of the strong over the weak.",
+    "Dreams unpursued are but whispers in the wind, meaningless and fleeting.",
+    "Shatter thy chains, or be content to rot in servitude.",
+    "Gold favors the cunning, not the pious or the hesitant.",
+    "A kingdom's glory is built upon the ashes of the defeated.",
+    "Suffer not the mediocrity of others to chain thy spirit.",
+    "The edge of a sword speaks louder than a hundred pleas.",
+    "Seek not the approval of others, for it is a prison for the ambitious.",
+    "The path to greatness is paved with the bones of thy failures.",
+    "Turn not thy cheek to insults; forbearance breeds contempt.",
+    "To reign is to wield power; to follow is to endure obscurity.",
+    "The wise sow discord among their rivals to reap unity for themselves."
+]
+
 
 BLOXLINK_API_KEY = os.environ.get('BLOXLINK_KEY')
 SERVER_ID = "788228600079843338"
@@ -976,12 +1012,14 @@ class GuidesCommittee(commands.Cog):
             except discord.errors.Forbidden:
                 return
         await add_tickets(self.bot.pool, closer.id)
+
         week = await count_user_tickets_this_week(self.bot.pool, closer.id)
         month = await count_user_tickets_this_month(self.bot.pool, closer.id)
         day = await count_user_tickets_today(self.bot.pool, closer.id)
-        print(f"Added 1 ticket to {closer} ({closer.id}")
 
         cooldown = await get_cooldown_time(self.bot.pool, closer.id, True)
+
+        random_number = random.randint(0,10)
 
         try:
             await channel.send(
@@ -1002,6 +1040,13 @@ class GuidesCommittee(commands.Cog):
                 await channel.send(
                     f"⚠**MORE THAN 8 WARNING**⚠\n<@{closer.id}> closed more than 8 tickets in a day. This is his ticket number `{day}` today\n\n@everyone"
                 )
+
+            if random_number <= 3:
+                quote = random.choice(MOTIVATIONAL_QUOTES)
+
+                embed = discord.Embed(color=colours["light_blue"], description=quote, title="Motivational Quote")
+
+                await channel.send(embed=embed)
         except discord.errors.Forbidden:
             pass
 
