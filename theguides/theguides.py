@@ -90,7 +90,6 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
                         print(f"{i[0]} NOT IN DISCORD, NOT INCLUDED IN CSV")
                         rm.append(j)
                         continue
-                #print(roblox_data)
                 try:
                     roblox_name = roblox_data["resolved"]["roblox"]["name"]
                 except Exception as e:
@@ -99,7 +98,6 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
                     )
                     print(f"{i[0]} NOT IN DISCORD, NOT INCLUDED IN CSV")
                     rm.append(j)
-                    print("MIAMI")
                     continue
                 i[0] = roblox_name
 
@@ -505,6 +503,12 @@ class GuidesCommittee(commands.Cog):
                 await ctx.channel.send(f"{error}, {type(error)}")
                 print("Unexpected exception:", error)
 
+            try:
+                await ctx.message.clear_reactions()
+                await ctx.message.add_reaction("⛔")
+            except Exception:
+                pass
+
     @commands.command()
     async def fix(self, ctx):
         if self.db_generated is False:
@@ -735,7 +739,7 @@ class GuidesCommittee(commands.Cog):
                                 ctx,
                                 title="Wrong username",
                                 description=
-                                "Error Checking, please try putting the right username"
+                                "Please try putting the right **ROBLOX** username"
                             )
                             return await ctx.message.reply(embed=e)
                         if data['data'][0]['requestedUsername'] != username:
@@ -743,14 +747,13 @@ class GuidesCommittee(commands.Cog):
                                 ctx,
                                 title="Failed checks",
                                 description=
-                                "Error Checking, please try manually checking")
+                                "Error Checking, please try again")
                             return await ctx.message.reply(embed=e)
                         print(data['data'][0]['id'])
                         username_id = data['data'][0]['id']
 
             if conversion_gamepass is True:
                 gamepass_id = find_most_similar(gamepass)
-                print(gamepass_id)
 
             async with session.get(
                     f'https://inventory.roblox.com/v1/users/{username_id}/items/1/{gamepass_id[1]}/is-owned'
@@ -765,7 +768,7 @@ class GuidesCommittee(commands.Cog):
                     if owns is True:
                         e = EmbedMaker(
                             ctx,
-                            title="Gamepass Owned",
+                            title=f"{EMOJI_VALUES[True]} ownership verified {EMOJI_VALUES[True]}",
                             description=
                             f"{gamepass_id[0]} owned by {username}, [link](https://inventory.roblox.com/v1/users/{username_id}/items/1/{gamepass_id[1]}/is-owned)"
                         )
@@ -773,16 +776,15 @@ class GuidesCommittee(commands.Cog):
                     else:
                         e = EmbedMaker(
                             ctx,
-                            title="Gamepass NOT Owned ⛔⛔⛔",
+                            title=f"{EMOJI_VALUES[False]} Gamepass NOT Owned {EMOJI_VALUES[False]}",
                             description=
-                            f"{gamepass_id[0]} not owned by {username}, [link](https://inventory.roblox.com/v1/users/{username_id}/items/1/{gamepass_id[1]}/is-owned)"
+                            f"{gamepass_id[0]} **NOT** owned by {username}, [link](https://inventory.roblox.com/v1/users/{username_id}/items/1/{gamepass_id[1]}/is-owned)"
                         )
                         return await ctx.message.reply(embed=e)
 
     @commands.command()
     @core.checks.thread_only()
     async def getinfo(self, ctx, member: discord.Member = None):
-
         await ctx.message.add_reaction("<a:loading_f:1249799401958936576>")
 
         if member is None:
