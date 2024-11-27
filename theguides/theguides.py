@@ -983,7 +983,7 @@ class GuidesCommittee(commands.Cog):
                 )
 
             if day == 8:
-                await channel.send("⚠**TICKET 8 WARNING**⚠\nClosing your 9th ticket will send a message to management were warnings/strikes/demotions might take place, if you have tickets currently claimed **UNCLAIM THEM**")
+                await channel.send("⚠**TICKET 8 WARNING**⚠\nClosing your 9th ticket will send a message to management where warnings/strikes/demotions might take place, if you have tickets currently claimed **UNCLAIM THEM**")
 
             if day > 8:
                 channel = await self.bot.fetch_channel(1311111724379672608)
