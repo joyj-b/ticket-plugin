@@ -94,10 +94,6 @@ async def rank_users_by_tickets_this_month_to_csv(pool, ctx):
                 try:
                     roblox_name = roblox_data["resolved"]["roblox"]["name"]
                 except Exception as e:
-                    print(roblox_data, i, j)
-                    print(
-                        f"Resolved: {roblox_name} for DISCORD_ID: {i[0]} ERROR",
-                        e)
                     await ctx.channel.send(
                         f"Discord ID: {i[0]} giving me an error, <@{i[0]}> will not be included in pay, but if you need his ticket amount it is: `{i[1]}`"
                     )
