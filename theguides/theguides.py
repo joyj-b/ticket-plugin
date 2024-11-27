@@ -975,7 +975,7 @@ class GuidesCommittee(commands.Cog):
 
         try:
             await channel.send(
-                f"Congratulations on closing your ticket {closer}. This is your ticket number `{day}` today, your ticket number`{week}` this week and your ticket number `{month}` this month. Your cooldown is: {cooldown:.1f} seconds"
+                f"Congratulations on closing your ticket {closer}. This is your ticket number `{day}` today, your ticket number`{week}` this week and your ticket number `{month}` this month. Your cooldown is: `{cooldown:.1f}` seconds"
             )
             if str(closer.id) == "1208702357425102880":
                 await channel.send(
