@@ -757,7 +757,7 @@ class GuidesCommittee(commands.Cog):
                     if owns is True:
                         e = EmbedMaker(
                             ctx,
-                            title=f"{EMOJI_VALUES[True]} ownership verified {EMOJI_VALUES[True]}",
+                            title=f"{EMOJI_VALUES[True]} Ownership Verified",
                             description=
                             f"{gamepass_id[0]} owned by {username}, [link](https://inventory.roblox.com/v1/users/{username_id}/items/1/{gamepass_id[1]}/is-owned)"
                         )
@@ -765,7 +765,7 @@ class GuidesCommittee(commands.Cog):
                     else:
                         e = EmbedMaker(
                             ctx,
-                            title=f"{EMOJI_VALUES[False]} Gamepass NOT Owned {EMOJI_VALUES[False]}",
+                            title=f"{EMOJI_VALUES[False]} Gamepass NOT Owned",
                             description=
                             f"{gamepass_id[0]} **NOT** owned by {username}, [link](https://inventory.roblox.com/v1/users/{username_id}/items/1/{gamepass_id[1]}/is-owned)"
                         )
