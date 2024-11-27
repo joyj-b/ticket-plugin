@@ -412,17 +412,13 @@ ROLE_HIERARCHY = [
 def is_bypass():
 
     async def predicate(ctx):
-        return (ctx.author.id in BYPASS_LIST) or (set(
-            [i.id
-             for i in ctx.author.roles]).intersection(set(ROLE_HIERARCHY[:2])))
+        return ctx.author.id in BYPASS_LIST  # or (set( [i.id for i in ctx.author.roles]).intersection(set(ROLE_HIERARCHY[:2]))) idk why i did this so commenting it out
 
     return commands.check(predicate)
 
 
 async def check(ctx):
-    if ctx.author.id in BYPASS_LIST or set(
-        [i.id
-         for i in ctx.author.roles]).intersection(set(ROLE_HIERARCHY[:2])):
+    if ctx.author.id in BYPASS_LIST:  # or set( [i.id for i in ctx.author.roles]).intersection(set(ROLE_HIERARCHY[:2])): idk why i did this so commenting it out
         return True
 
     coll = ctx.bot.plugin_db.get_partition(ctx.bot.get_cog('GuidesCommittee'))
