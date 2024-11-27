@@ -172,7 +172,6 @@ async def count_user_tickets_today(pool, user_id):
             return result[0]
 
 
-
 async def count_user_tickets_this_week(pool, user_id):
     async with pool.acquire() as conn:
         async with conn.cursor() as cur:
