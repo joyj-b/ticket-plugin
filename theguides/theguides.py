@@ -662,30 +662,20 @@ class GuidesCommittee(commands.Cog):
                 }})
             e = EmbedMaker(
                 ctx,
-                title="Takeover",
-                description=f"Takeover by <@{ctx.author.id}> successful")
+                title="Taken over succesfully",
+                description=f"Takeover by <@{ctx.author.id}> successful, they now own the ticket. Channel name change can take up to 5 minutes")
             await ctx.channel.send(embed=e)
             try:
                 nickname = ctx.author.display_name
-
                 await ctx.channel.edit(name=f"claimed-{nickname}")
-
-                m = await ctx.message.channel.send(
-                    f"Successfully renamed, this rename was sponsored by the **guides committee**"
-                )
-
-                await asyncio.sleep(10)
-
-                await m.delete()
-
             except discord.errors.Forbidden:
-                await ctx.message.reply("I don't have permission to do that")
+                await ctx.message.reply("I couldn't change the channel name sorry")
         else:
             e = EmbedMaker(
                 ctx,
                 title="Takeover Denied",
                 description=
-                f"Takeover denied as claimer is your superior or same rank, if you need to takeover and this is not letting you, ask for a manual transfer to management."
+                f"Takeover denied since the claimer is your superior or the same rank as you, if you need to takeover and this is not letting you, ask management for a manual transfer."
             )
             await ctx.reply(embed=e)
 
@@ -704,7 +694,6 @@ class GuidesCommittee(commands.Cog):
 
         self.bot.sync_db.close()
         await self.bot.pool.terminate()
-        print("Bye Bye pool")
 
     @commands.command()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
