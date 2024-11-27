@@ -452,7 +452,7 @@ class GuidesCommittee(commands.Cog):
         self.bot.get_command("close").add_check(check)
         self.db_generated = False
 
-        # Synchronous database, I hate this bot Oliver made me do a fucking cooldown
+        # Synchronous database, I hate this, but Oliver made me do a fucking cooldown
         self.bot.sync_db = psycopg2.connect(dbname="tickets",
                                             user="cityairways",
                                             password=PASSWORD,
