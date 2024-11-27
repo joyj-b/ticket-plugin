@@ -510,7 +510,7 @@ class GuidesCommittee(commands.Cog):
                 pass
 
     @commands.command()
-    async def fix(self, ctx):
+    async def initdb(self, ctx):
         if self.db_generated is False:
             pool = await create_database()
             self.bot.pool = pool
