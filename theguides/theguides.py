@@ -451,11 +451,11 @@ class GuidesCommittee(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db = self.bot.api.get_plugin_partition(self)
-        self.bot.get_command("reply").add_check(check, call_once=True)
-        self.bot.get_command("areply").add_check(check, call_once=True)
-        self.bot.get_command("fareply").add_check(check, call_once=True)
-        self.bot.get_command("freply").add_check(check, call_once=True)
-        self.bot.get_command("close").add_check(check, call_once=True)
+        self.bot.get_command("reply").add_check(check)
+        self.bot.get_command("areply").add_check(check)
+        self.bot.get_command("fareply").add_check(check)
+        self.bot.get_command("freply").add_check(check)
+        self.bot.get_command("close").add_check(check)
         self.db_generated = False
 
         # Synchronous database, I hate this bot Oliver made me do a fucking cooldown
