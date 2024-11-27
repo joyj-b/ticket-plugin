@@ -19,13 +19,13 @@ from discord.ext import commands, tasks
 
 # PULL REQUEST TO CHANGE THESE
 BYPASS_LIST = [
-    767824073186869279, # abbi
-    249568050951487499, # akhil
-    323473569008975872, # olly
-    381170131721781248, # crois
-    346382745817055242, # felix
-    211368856839520257, # illy
-    335415340190269440, # Olly's alt
+    767824073186869279,  # abbi
+    249568050951487499,  # akhil
+    323473569008975872,  # olly
+    381170131721781248,  # crois
+    346382745817055242,  # felix
+    211368856839520257,  # illy
+    335415340190269440,  # Olly's alt
 ]
 
 UNITS = {
@@ -155,6 +155,7 @@ async def count_user_tickets_this_month(pool, user_id):
             # Return the count
             return result[0]
 
+
 async def count_user_tickets_today(pool, user_id):
     async with pool.acquire() as conn:
         async with conn.cursor() as cur:
@@ -165,7 +166,7 @@ async def count_user_tickets_today(pool, user_id):
                 FROM tickets 
                 WHERE user_id = %s
                 AND DATE(timestamp) = CURRENT_DATE;
-                """, (user_id,))
+                """, (user_id, ))
             # Fetch the result
             result = await cur.fetchone()
             # Return the count
@@ -221,7 +222,7 @@ def handle_cooldown_result(future, ctx):
 
 def new_cooldown(ctx):
     if ctx.author.id in BYPASS_LIST:
-       return None
+        return None
 
     print(f"cooldown")
     cooldown = get_cooldown_time_sync(ctx.bot.sync_db, ctx)
@@ -401,10 +402,12 @@ def EmbedMaker(ctx, **kwargs):
     )
     return e
 
+
 ROLE_HIERARCHY = [
     '1248340570275971125', '1248340594686820403', '1248340609727729795',
     '1248340626773381240', '1248340641117765683'
 ]
+
 
 def is_bypass():
 
@@ -468,9 +471,11 @@ class GuidesCommittee(commands.Cog):
             await ctx.send(embed=embed)
         else:
             # TAKEN FROM https://github.com/modmail-dev/Modmail/blob/master/bot.py
-            if isinstance(error, (commands.BadArgument, commands.BadUnionArgument)):
+            if isinstance(error,
+                          (commands.BadArgument, commands.BadUnionArgument)):
                 await ctx.typing()
-                await ctx.send(embed=discord.Embed(color=ctx.bot.error_color, description=str(error)))
+                await ctx.send(embed=discord.Embed(color=ctx.bot.error_color,
+                                                   description=str(error)))
             elif isinstance(error, commands.CommandNotFound):
                 print("CommandNotFound: %s", error)
             elif isinstance(error, commands.MissingRequiredArgument):
@@ -480,10 +485,12 @@ class GuidesCommittee(commands.Cog):
                     if not await check(ctx):
                         if hasattr(check, "fail_msg"):
                             await ctx.send(
-                                embed=discord.Embed(color=ctx.bot.error_color, description=check.fail_msg)
+                                embed=discord.Embed(color=ctx.bot.error_color,
+                                                    description=check.fail_msg)
                             )
                         if hasattr(check, "permission_level"):
-                            corrected_permission_level = ctx.bot.command_perm(ctx.command.qualified_name)
+                            corrected_permission_level = ctx.bot.command_perm(
+                                ctx.command.qualified_name)
                             print(
                                 "User %s does not have permission to use this command: `%s` (%s).",
                                 ctx.author.name,
@@ -492,11 +499,15 @@ class GuidesCommittee(commands.Cog):
                             )
                 print("CheckFailure: %s", error)
             elif isinstance(error, commands.DisabledCommand):
-                print("DisabledCommand: %s is trying to run eval but it's disabled", ctx.author.name)
+                print(
+                    "DisabledCommand: %s is trying to run eval but it's disabled",
+                    ctx.author.name)
             elif isinstance(error, commands.CommandInvokeError):
-                await ctx.send(
-                    embed=discord.Embed(color=ctx.bot.error_color, description=f"{str(error)}\nYou might be getting this error during **getinfo** if the user is either\n1. Not in the `main` server\n2. Has no linked account in bloxlink")
-                )
+                await ctx.send(embed=discord.Embed(
+                    color=ctx.bot.error_color,
+                    description=
+                    f"{str(error)}\nYou might be getting this error during **getinfo** if the user is either\n1. Not in the `main` server\n2. Has no linked account in bloxlink"
+                ))
             else:
                 await ctx.channel.send(f"{error}, {type(error)}")
                 print("Unexpected exception:", error)
@@ -533,7 +544,8 @@ class GuidesCommittee(commands.Cog):
 
             try:
                 nickname = ctx.author.display_name
-                await ctx.channel.edit(name=f"claimed-{nickname}") # pls dont abuse this
+                await ctx.channel.edit(name=f"claimed-{nickname}"
+                                       )  # pls dont abuse this
 
                 embed = EmbedMaker(
                     ctx,
@@ -661,13 +673,16 @@ class GuidesCommittee(commands.Cog):
             e = EmbedMaker(
                 ctx,
                 title="Taken over succesfully",
-                description=f"Takeover by <@{ctx.author.id}> successful, they now own the ticket. Channel name change can take up to 5 minutes")
+                description=
+                f"Takeover by <@{ctx.author.id}> successful, they now own the ticket. Channel name change can take up to 5 minutes"
+            )
             await ctx.channel.send(embed=e)
             try:
                 nickname = ctx.author.display_name
                 await ctx.channel.edit(name=f"claimed-{nickname}")
             except discord.errors.Forbidden:
-                await ctx.message.reply("I couldn't change the channel name sorry")
+                await ctx.message.reply(
+                    "I couldn't change the channel name sorry")
         else:
             e = EmbedMaker(
                 ctx,
@@ -733,8 +748,7 @@ class GuidesCommittee(commands.Cog):
                             e = EmbedMaker(
                                 ctx,
                                 title="Failed checks",
-                                description=
-                                "Error Checking, please try again")
+                                description="Error Checking, please try again")
                             return await ctx.message.reply(embed=e)
                         print(data['data'][0]['id'])
                         username_id = data['data'][0]['id']
@@ -924,9 +938,11 @@ class GuidesCommittee(commands.Cog):
             {'$set': {
                 'claimer': str(user.id)
             }})
-        e = EmbedMaker(ctx,
-                       title="Transfer",
-                       description=f"Transfer by <@{user.id}> successful, this ticket is now theirs.")
+        e = EmbedMaker(
+            ctx,
+            title="Transfer",
+            description=
+            f"Transfer by <@{user.id}> successful, this ticket is now theirs.")
         await ctx.channel.send(embed=e)
         try:
             nickname = user.display_name
@@ -981,11 +997,15 @@ class GuidesCommittee(commands.Cog):
                 )
 
             if day == 8:
-                await channel.send("⚠**TICKET 8 WARNING**⚠\nClosing your 9th ticket will send a message to management where warnings/strikes/demotions might take place, if you have tickets currently claimed **UNCLAIM THEM**")
+                await channel.send(
+                    "⚠**TICKET 8 WARNING**⚠\nClosing your 9th ticket will send a message to management where warnings/strikes/demotions might take place, if you have tickets currently claimed **UNCLAIM THEM**"
+                )
 
             if day > 8:
                 channel = await self.bot.fetch_channel(1311111724379672608)
-                await channel.send(f"⚠**MORE THAN 8 WARNING**⚠\n<@{closer.id}> closed more than 8 tickets in a day. This is his ticket number `{day}` today\n\n@everyone")
+                await channel.send(
+                    f"⚠**MORE THAN 8 WARNING**⚠\n<@{closer.id}> closed more than 8 tickets in a day. This is his ticket number `{day}` today\n\n@everyone"
+                )
         except discord.errors.Forbidden:
             pass
 
