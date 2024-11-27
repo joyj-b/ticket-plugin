@@ -991,6 +991,11 @@ class GuidesCommittee(commands.Cog):
         except discord.errors.Forbidden:
             pass
 
+    @commands.command()
+    @is_bypass()
+    async def hi(self, ctx):
+        await ctx.channel.send("Hi there")
+
 
 async def setup(bot):
     await bot.add_cog(GuidesCommittee(bot))
