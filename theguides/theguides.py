@@ -7,7 +7,7 @@ import math
 import os
 import re
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from difflib import SequenceMatcher
 
 import random
@@ -565,6 +565,16 @@ class GuidesCommittee(commands.Cog):
     @commands.dynamic_cooldown(new_cooldown, type=commands.BucketType.user)
     @commands.command()
     async def claim(self, ctx):
+        time = ctx.channel.created_at
+        time = time.replace(tzinfo=timezone.utc)
+
+        time_now = datetime.now(timezone.utc)
+
+        diff = (time_now - time).total_seconds() * 1000
+
+        if diff < 1000:
+            return await ctx.channel.send("Too fast, please try again")
+
         thread = await self.db.find_one(
             {'thread_id': str(ctx.thread.channel.id)})
         if thread is None:
