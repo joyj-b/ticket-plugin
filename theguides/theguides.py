@@ -572,7 +572,7 @@ class GuidesCommittee(commands.Cog):
 
         diff = (time_now - time).total_seconds() * 1000
 
-        if diff < 1000:
+        if diff < 1493:
             return await ctx.channel.send("Too fast, please try again")
 
         thread = await self.db.find_one(
