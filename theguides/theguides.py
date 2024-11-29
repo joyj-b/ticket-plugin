@@ -1033,16 +1033,20 @@ class GuidesCommittee(commands.Cog):
 
         try:
             await channel.send(
-                f"Congratulations on closing your ticket {closer}. This is your ticket number `{day}` today, your ticket number`{week}` this week and your ticket number `{month}` this month. Your cooldown is: `{cooldown:.1f}` seconds"
+                f"Congratulations on closing your ticket {closer}. This is your ticket number `{day}` today, your ticket"
+                f" number`{week}` this week and your ticket number `{month}` this month. Your cooldown "
+                f"is: `{cooldown:.1f}` seconds"
             )
             if str(closer.id) == "1208702357425102880":
                 await channel.send(
-                    "Hi Ben, this is a special message I have in store for when you close a ticket. I just want to extend my heartfelt congratulations, because this job you do is impressive."
+                    "Hi Ben, this is a special message I have in store for when you close a ticket. I just want to "
+                    "extend my heartfelt congratulations, because this job you do is impressive."
                 )
 
             if day == 8:
                 await channel.send(
-                    "⚠**TICKET 8 WARNING**⚠\nClosing your 9th ticket will send a message to management where warnings/strikes/demotions might take place, if you have tickets currently claimed **UNCLAIM THEM**"
+                    "⚠**TICKET 8 WARNING**⚠\nClosing your 9th ticket will send a message to management where "
+                    "warnings/strikes/demotions might take place, if you have tickets currently claimed **UNCLAIM THEM**"
                 )
 
             if day > 8:
