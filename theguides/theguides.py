@@ -5,12 +5,11 @@ import csv
 import json
 import math
 import os
+import random
 import re
 import uuid
 from datetime import datetime, timedelta, timezone
 from difflib import SequenceMatcher
-
-import random
 
 import aiohttp
 import aiopg
@@ -70,7 +69,6 @@ MOTIVATIONAL_QUOTES = [
     "To reign is to wield power; to follow is to endure obscurity.",
     "The wise sow discord among their rivals to reap unity for themselves."
 ]
-
 
 BLOXLINK_API_KEY = os.environ.get('BLOXLINK_KEY')
 SERVER_ID = "788228600079843338"
@@ -1031,7 +1029,7 @@ class GuidesCommittee(commands.Cog):
 
         cooldown = await get_cooldown_time(self.bot.pool, closer.id, True)
 
-        random_number = random.randint(0,10)
+        random_number = random.randint(0, 10)
 
         try:
             await channel.send(
@@ -1056,7 +1054,9 @@ class GuidesCommittee(commands.Cog):
             if random_number <= 3:
                 quote = random.choice(MOTIVATIONAL_QUOTES)
 
-                embed = discord.Embed(color=colours["light_blue"], description=quote, title="Motivational Quote")
+                embed = discord.Embed(color=colours["light_blue"],
+                                      description=quote,
+                                      title="Motivational Quote")
 
                 await channel.send(embed=embed)
         except discord.errors.Forbidden:
