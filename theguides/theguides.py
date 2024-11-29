@@ -1050,7 +1050,7 @@ class GuidesCommittee(commands.Cog):
             if day > 8:
                 channel = await self.bot.fetch_channel(1311111724379672608)
                 await channel.send(
-                    f"⚠**MORE THAN 8 WARNING**⚠\n<@{closer.id}> closed more than 8 tickets in a day. This is his ticket number `{day}` today\n\n@everyone"
+                    f"⚠**MORE THAN 8 WARNING**⚠\n<@{closer.id}> closed more than 8 tickets in a day. This is his ticket number `{day}` today"
                 )
 
             if random_number <= 3:
