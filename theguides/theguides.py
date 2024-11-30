@@ -394,9 +394,11 @@ class DropDownView(discord.ui.View):
         self.add_item(dropdown)
 
 
-THUMBNAIL = ("https://cdn.discordapp.com/attachments/1208495821868245012/1291896171555455027/CleanShot_2024-10-04_"
-             "at_23.53.582x.png?ex=6701c391&is=67007211&hm=1138ae2d92387ecde7be34af238bd756462970de2ca6ca559c6aa091f9"
-             "32a8ae&")
+THUMBNAIL = (
+    "https://cdn.discordapp.com/attachments/1208495821868245012/1291896171555455027/CleanShot_2024-10-04_"
+    "at_23.53.582x.png?ex=6701c391&is=67007211&hm=1138ae2d92387ecde7be34af238bd756462970de2ca6ca559c6aa091f9"
+    "32a8ae&"
+)
 FOOTER = "Sponsored by the Guides Committee"
 
 gamepasses = {
