@@ -584,7 +584,7 @@ class GuidesCommittee(commands.Cog):
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
     @commands.dynamic_cooldown(new_cooldown, type=commands.BucketType.user)
     @commands.command()
-    async def claim(self, ctx):
+    async def claim(self, ctx, bypass: str = None):
         time = ctx.channel.created_at
         time = time.replace(tzinfo=timezone.utc)
 
@@ -596,6 +596,17 @@ class GuidesCommittee(commands.Cog):
 
         if diff < timing:
             return await ctx.channel.send("Too fast, please try again")
+
+        day = await count_user_tickets_today(self.bot.pool, ctx.author.id)
+
+        if (day == 8) and (bypass != "bypass"):
+            embed = EmbedMaker(
+                ctx,
+                title="You have done 8 tickets today",
+                description=f"You've done 8 tickets today! Doing more will cause management to be notified. However if you wish to claim it run `.claim bypass`",
+                colour="red",
+            )
+            return await ctx.send(embed=embed)
 
         thread = await self.db.find_one({"thread_id": str(ctx.thread.channel.id)})
         if thread is None:
