@@ -738,9 +738,7 @@ class GuidesCommittee(commands.Cog):
         for i in roles_to_take_c:
             roles_claimed.remove(i)
 
-        if ROLE_HIERARCHY.index(roles_taker[-1]) < ROLE_HIERARCHY.index(
-            roles_claimed[-1]
-        ):
+        if (ROLE_HIERARCHY.index(roles_taker[-1]) < ROLE_HIERARCHY.index(roles_claimed[-1])) or (ctx.author.id in BYPASS_LIST):
             await self.db.find_one_and_update(
                 {"thread_id": str(ctx.thread.channel.id)},
                 {"$set": {"claimer": str(ctx.author.id)}},
