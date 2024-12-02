@@ -995,6 +995,7 @@ class GuidesCommittee(commands.Cog):
         except discord.errors.Forbidden:
             pass
 
+
     @commands.command()
     @core.checks.thread_only()
     @is_bypass()
