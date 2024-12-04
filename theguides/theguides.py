@@ -29,6 +29,62 @@ BYPASS_LIST = [
     335415340190269440,  # Olly's alt
 ]
 
+ROLE_HIERARCHY = [
+    "1248340570275971125",
+    "1248340594686820403",
+    "1248340609727729795",
+    "1248340626773381240",
+    "1248340641117765683",
+]
+
+
+
+THUMBNAIL = (
+    "https://cdn.discordapp.com/attachments/1208495821868245012/1291896171555455027/CleanShot_2024-10-04_"
+    "at_23.53.582x.png?ex=6701c391&is=67007211&hm=1138ae2d92387ecde7be34af238bd756462970de2ca6ca559c6aa091f9"
+    "32a8ae&"
+)
+FOOTER = "Sponsored by the Guides Committee"
+
+gamepasses = {
+    "Rainbow Name": 20855496,
+    "Ground Crew": 20976711,
+    "Cabin Crew": 20976738,
+    "Captain": 20976820,
+    "Senior Staff": 20976845,
+    "Staff Manager": 20976883,
+    "Airport Manager": 20976943,
+    "Board of Directors": 21002253,
+    "Co Owner": 21002275,
+    "First Class": 21006608,
+    "Segway Board": 22042259,
+}
+
+# MONOKAI PRO PALETTE
+colours = {
+    "green": 0xA9DC76,
+    "red": 0xFF6188,
+    "yellow": 0xFFD866,
+    "light_blue": 0x78DCE8,
+    "purple": 0xAB9DF2,
+}
+
+channel_options = {
+    "Main": "1221162035513917480",
+    "Prize Claims": "1213885924581048380",
+    "Affiliate": "1196076391242944693",
+    "Development": "1196076499137200149",
+    "Appeals": "1196076578938036255",
+    "Moderator Reports": "1246863733355970612",
+}
+
+# Dummy code for testing
+# channel_options = {
+#     'Mu': '1249441110829301911',
+#     'Phi': '1249441160762494997',
+#     'Lambaaaa': '1249441131524132894',
+# }
+
 UNITS = {"s": "seconds", "m": "minutes", "h": "hours", "d": "days", "w": "weeks"}
 
 MOTIVATIONAL_QUOTES = [
@@ -349,23 +405,6 @@ def convert_to_seconds(text: str) -> int:
     )
 
 
-channel_options = {
-    "Main": "1221162035513917480",
-    "Prize Claims": "1213885924581048380",
-    "Affiliate": "1196076391242944693",
-    "Development": "1196076499137200149",
-    "Appeals": "1196076578938036255",
-    "Moderator Reports": "1246863733355970612",
-}
-
-# Dummy code for testing
-# channel_options = {
-#     'Mu': '1249441110829301911',
-#     'Phi': '1249441160762494997',
-#     'Lambaaaa': '1249441131524132894',
-# }
-
-
 class DropDownChannels(discord.ui.Select):
     def __init__(self):
         options = [discord.SelectOption(label=i[0]) for i in channel_options.items()]
@@ -394,37 +433,6 @@ class DropDownView(discord.ui.View):
         self.add_item(dropdown)
 
 
-THUMBNAIL = (
-    "https://cdn.discordapp.com/attachments/1208495821868245012/1291896171555455027/CleanShot_2024-10-04_"
-    "at_23.53.582x.png?ex=6701c391&is=67007211&hm=1138ae2d92387ecde7be34af238bd756462970de2ca6ca559c6aa091f9"
-    "32a8ae&"
-)
-FOOTER = "Sponsored by the Guides Committee"
-
-gamepasses = {
-    "Rainbow Name": 20855496,
-    "Ground Crew": 20976711,
-    "Cabin Crew": 20976738,
-    "Captain": 20976820,
-    "Senior Staff": 20976845,
-    "Staff Manager": 20976883,
-    "Airport Manager": 20976943,
-    "Board of Directors": 21002253,
-    "Co Owner": 21002275,
-    "First Class": 21006608,
-    "Segway Board": 22042259,
-}
-
-# MONOKAI PRO PALETTE
-colours = {
-    "green": 0xA9DC76,
-    "red": 0xFF6188,
-    "yellow": 0xFFD866,
-    "light_blue": 0x78DCE8,
-    "purple": 0xAB9DF2,
-}
-
-
 def find_most_similar(name):
     return max(
         gamepasses.items(), key=lambda x: SequenceMatcher(None, x[0], name).ratio()
@@ -444,16 +452,6 @@ def EmbedMaker(ctx, **kwargs):
         icon_url="https://cdn.discordapp.com/icons/788228600079843338/21fb48653b571db2d1801e29c6b2eb1d.png?size=4096",
     )
     return e
-
-
-ROLE_HIERARCHY = [
-    "1248340570275971125",
-    "1248340594686820403",
-    "1248340609727729795",
-    "1248340626773381240",
-    "1248340641117765683",
-]
-
 
 def is_bypass():
     async def predicate(ctx):
@@ -503,6 +501,8 @@ class GuidesCommittee(commands.Cog):
         self.bot.sync_db = psycopg2.connect(
             dbname="tickets", user="cityairways", password=PASSWORD, host="citypostgres"
         )
+
+        self.bot.frozen = []
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
@@ -701,6 +701,10 @@ class GuidesCommittee(commands.Cog):
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
     @commands.command()
     async def takeover(self, ctx):
+
+        if ctx.channel.id in self.bot.frozen:
+            return await ctx.channel.send("Channel is frozen")
+
         roles_taker = [str(i.id) for i in ctx.author.roles]
         roles_to_take_t = []
         for i in range(len(roles_taker)):
@@ -777,6 +781,14 @@ class GuidesCommittee(commands.Cog):
 
         self.bot.sync_db.close()
         await self.bot.pool.terminate()
+
+    @commands.command()
+    @is_bypass()
+    async def mine(self, ctx: commands.Context):
+        if ctx.channel.id not in self.bot.frozen:
+            self.bot.frozen.append(ctx.channel.id)
+
+        await ctx.channel.send("This channel is frozen now, `takeover` is **disabled**, transfer is **enabled**.")
 
     @commands.command()
     @core.checks.has_permissions(core.models.PermissionLevel.SUPPORTER)
@@ -1107,5 +1119,11 @@ class GuidesCommittee(commands.Cog):
         await ctx.channel.send("Hi there")
 
 
+async def wait_for(ctx: discord.ext.commands.Context, time: int, embed: discord.Embed) -> None:
+    await asyncio.sleep(time)
+    await ctx.channel.send()
+
+
 async def setup(bot):
     await bot.add_cog(GuidesCommittee(bot))
+
