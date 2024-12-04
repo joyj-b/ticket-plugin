@@ -784,7 +784,7 @@ class GuidesCommittee(commands.Cog):
 
     @commands.command()
     @is_bypass()
-    async def mine(self, ctx: commands.Context):
+    async def freeze(self, ctx: commands.Context):
         if ctx.channel.id not in self.bot.frozen:
             self.bot.frozen.append(ctx.channel.id)
 
