@@ -20,13 +20,9 @@ from discord.ext import commands, tasks
 
 # PULL REQUEST TO CHANGE THESE
 BYPASS_LIST = [
-    767824073186869279,  # abbi
-    249568050951487499,  # akhil
-    323473569008975872,  # olly
-    381170131721781248,  # crois
-    346382745817055242,  # felix
-    211368856839520257,  # illy
-    335415340190269440,  # Olly's alt
+    912471773059100703,  # joy
+    345982934441918484,  # novai
+    862775787667980308,  # inv
 ]
 
 ROLE_HIERARCHY = [
@@ -44,7 +40,7 @@ THUMBNAIL = (
     "at_23.53.582x.png?ex=6701c391&is=67007211&hm=1138ae2d92387ecde7be34af238bd756462970de2ca6ca559c6aa091f9"
     "32a8ae&"
 )
-FOOTER = "Sponsored by the Guides Committee"
+FOOTER = "Created by TGC, Adapted by Joyfui10"
 
 gamepasses = {
     "Rainbow Name": 20855496,
